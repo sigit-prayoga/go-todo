@@ -15,14 +15,16 @@ func main() {
 	// Init DB connection
 	db = initDB()
 
+	h := http.NewServeMux()
+
 	// Register all end-points
-	http.HandleFunc("/", helloServer)
-	http.HandleFunc("/todos", getTodos)
-	http.HandleFunc("/todos/add", addTodo)
-	http.HandleFunc("/todos/update", updateTodo)
+	h.HandleFunc("/", helloServer)
+	h.HandleFunc("/todos", getTodos)
+	h.HandleFunc("/todos/add", addTodo)
+	h.HandleFunc("/todos/update", updateTodo)
 
 	log.Println("Listening...")
-	log.Fatal(http.ListenAndServe(":8383", nil))
+	log.Fatal(http.ListenAndServe(":8383", h))
 }
 
 func helloServer(w http.ResponseWriter, req *http.Request) {
