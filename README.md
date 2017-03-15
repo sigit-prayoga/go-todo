@@ -11,6 +11,20 @@ $ go get
 $ go run main.go
 ```
 
+## Install postgres
+```sh
+$ sudo apt-get install postgres
+
+# Switch to 'postgres'
+$ sudo su - postgres
+
+# Start to work with psql
+$ psql
+```
+
+## Create Todos table
+Type this `CREATE EXTENSION IF NOT EXISTS "uuid-ossp";` to work with UUID. And then, use `create table todos(todo text, done boolean default false, id uuid not null default uuid_generate_v4());` to create a todos table. To verify table, use `\d+ todos`
+
 ## Test your application
 ```sh
 # Get all todo
@@ -21,19 +35,4 @@ $ curl -X POST -d '{"todo":"Learn more about Go"}' http://localhost:8383/todos/a
 
 # Update todo
 $ curl -X POST -d '{"id":"<some_id>"}' http://localhost:8383/todos/update
-```
-
-**Note** Make sure you have posgres installed in your computer, with username `postgres` and db name `postgres`
-```sh
-Macbook:~ sigitprayoga$ psql -U postgres
-psql (9.5.3)
-Type "help" for help.
-
-postgres=# \d+
-                    List of relations
- Schema | Name  | Type  |  Owner   | Size  | Description
---------+-------+-------+----------+-------+-------------
- public | todos | table | postgres | 16 kB |
-(1 row)
-
 ```
