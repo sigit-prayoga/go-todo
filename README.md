@@ -23,7 +23,10 @@ $ psql
 ```
 
 ## Create Todos table
-Type this `CREATE EXTENSION IF NOT EXISTS "uuid-ossp";` to work with UUID. And then, use `create table todos(todo text, done boolean default false, id uuid not null default uuid_generate_v4());` to create a todos table. To verify table, use `\d+ todos`
+Type this 
+`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";` to work with UUID. And then, use 
+`create table todos(todo text, done boolean default false, id uuid not null default uuid_generate_v4());` to create a `todos` table. 
+To verify table, use `\d+ todos`.
 
 ## Test your application
 ```sh
@@ -34,5 +37,5 @@ $ curl http://localhost:8383/todos
 $ curl -X POST -d '{"todo":"Learn more about Go"}' http://localhost:8383/todos/add
 
 # Update todo
-$ curl -X POST -d '{"id":"<some_id>"}' http://localhost:8383/todos/update
+$ curl -X POST -d '{"id":"<some_id>", "done":true}' http://localhost:8383/todos/update
 ```
