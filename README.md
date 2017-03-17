@@ -34,8 +34,11 @@ To verify table, use `\d+ todos`.
 $ curl http://localhost:8383/todos
 
 # Add new todo
-$ curl -X POST -d '{"todo":"Learn more about Go"}' http://localhost:8383/todos/add
+$ curl -X POST -d '{"todo":"Learn more about Go"}' http://localhost:8383/todos
 
 # Update todo
-$ curl -X POST -d '{"id":"<some_id>", "done":true}' http://localhost:8383/todos/update
+$ curl -X UPDATE -d '{"todo":"Learn more about Go", "id":"<some_id>", "done":true}' http://localhost:8383/todos
+
+# Delete todo
+$ curl -X DELETE -d '{"id":"<some_id>"}' http://localhost:8383/todos
 ```

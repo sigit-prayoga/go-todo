@@ -96,7 +96,12 @@ func updateTodo(w http.ResponseWriter, req *http.Request) error {
 	}
 
 	// only 'done' column will get updated based on 'id'
-	_, err = db.Model(todo).Column("done").Update()
+	printj.Print(todo, true, "Req Body")
+	column := []string{"done"}
+	if todo.Todo != nil {
+		column = append(column, "todo")
+	}
+	_, err = db.Model(todo).Column(column...).Update()
 	if err != nil {
 		return fmt.Errorf("%v", err)
 	}
@@ -159,7 +164,7 @@ func writeResponse(w http.ResponseWriter, v interface{}, code int) {
 // Todo Model = 'todos' table
 type Todo struct {
 	tableName struct{} `sql:"todos"`
-	Todo      *string  `json:"todo"`
+	Todo      *string  `json:"todo,omitempty"`
 	Done      bool     `json:"done"`
-	ID        string   `json:"id"`
+	ID        string   `json:"id,omitempty"`
 }
