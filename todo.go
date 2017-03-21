@@ -3,10 +3,12 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"net"
 	"net/http"
 
 	"fmt"
 
+	"github.com/rs/cors"
 	"github.com/sigit-prayoga/printj"
 	pg "gopkg.in/pg.v5"
 )
@@ -24,8 +26,28 @@ func main() {
 	h.HandleFunc("/", errorHandler(helloServer))
 	h.HandleFunc("/todos", errorHandler(requestTodo))
 
+	// Allow all methods
+	c := cors.New(cors.Options{
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
+	})
+
+	// Set CORS for the existing routes
+	hcors := c.Handler(h)
+
+	// Init the server
+	server := http.Server{Handler: hcors}
+
+	// Instead of using `tcp` (it defaults to ipv6), it listens to ipv4
+	ln, err := net.Listen("tcp4", ":8383")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	log.Println("Listening...")
-	log.Fatal(http.ListenAndServe(":8383", h))
+	log.Fatal(server.Serve(ln))
+
+	// Uncomment this to listen using `tcp` instead
+	// log.Fatal(http.ListenAndServe(":8383", hcors))
 }
 
 func errorHandler(f func(http.ResponseWriter, *http.Request) error) http.HandlerFunc {
